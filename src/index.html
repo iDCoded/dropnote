@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drop Note</title>
+</head>
+<body>
+  <div class="controls-div">
+    <section class="controls">
+      <button class="new-file-btn">New File</button>
+      <button class="open-file-btn">Open File</button>
+      <button class="save-file-btn" disabled>Save file</button>
+    </section>
+  </div>
+  <div>
+    <section class="content">
+      <textarea class="raw-markdown" id="markdown" cols="30" rows="10"></textarea>
+      <div class="rendered-html" id="html"></div>
+    </section>
+  </div>
+</body>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<script src="renderer.js"></script>
+</html> 

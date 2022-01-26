@@ -1,0 +1,31 @@
+{
+  "name": "dropnote",
+  "version": "1.0.0",
+  "productName": "Drop Note",
+  "icon": "icons/dropnote.ico",
+  "description": "Note-taking application.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iDCoded/Drop-Note.git"
+  },
+  "keywords": [
+    "note"
+  ],
+  "author": "Dhruv Anand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iDCoded/Drop-Note/issues"
+  },
+  "homepage": "https://github.com/iDCoded/Drop-Note#readme",
+  "devDependencies": {
+    "electron": "^16.0.7"
+  },
+  "dependencies": {
+    "marked": "^4.0.10"
+  }
+}
