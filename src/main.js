@@ -56,9 +56,10 @@ function getFileFromUser () {
         ]
     }).then((response) => {
         if (!response.canceled) {
-            console.log(response.filePaths[0]);
             openFile(response.filePaths[0]);
-        } else {console.log('No file selected');}
+        } else {
+            dialog.showErrorBox("Couldn't open file", "No file selected");
+        }
     })    
 };
 
@@ -66,12 +67,10 @@ function getFileFromUser () {
  * Open the file and get its content. (Converted to string)
 */
 function openFile (file) {
-    console.log('The given file path is ' + file)
-    const content = fs.readFile(file, (err, data) => {
+    fs.readFile(file, (err, data) => {
         if (err) {
-            console.log('there was an error');
+            dialog.showErrorBox("Error opening that file", err.message);
         } else {
-            console.log("The data is -> " + data);
             applicationWindow.webContents.send('opened-file', data.toString());
         }
     });
@@ -80,6 +79,5 @@ function openFile (file) {
 
 
 ipcMain.on('open-file', () => {
-    console.log('Requested to open file.');
     getFileFromUser();
 })
