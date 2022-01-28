@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="../node_modules/simplemde/dist/simplemde.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drop Note</title>
@@ -15,7 +16,9 @@
   </div>
   <div>
     <section class="content">
-      <textarea class="raw-markdown" id="markdown" cols="30" rows="10"></textarea>
+      <div class="markdown-div">
+        <textarea class="raw-markdown" id="markdown" cols="30" rows="10"></textarea>
+      </div>
       <div class="rendered-html" id="html"></div>
     </section>
   </div>
@@ -24,5 +27,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<script src="../node_modules/simplemde/dist/simplemde.min.js"></script>
 <script src="renderer.js"></script>
+
+<!--highlight.js-->
+<script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
 </html> 

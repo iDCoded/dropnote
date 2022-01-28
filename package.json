@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
-    "marked": "^4.0.10"
+    "marked": "^4.0.10",
+    "simplemde": "^1.11.2"
   }
 }

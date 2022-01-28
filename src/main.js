@@ -55,27 +55,31 @@ function getFileFromUser () {
             { name: 'Text Files', extensions: ['txt'] }
         ]
     }).then((response) => {
-        if(!response.canceled) {
-            console.log("Opened the file: " + response.filePaths[0]);
+        if (!response.canceled) {
+            console.log(response.filePaths[0]);
             openFile(response.filePaths[0]);
-        } else {
-            dialog.showErrorBox("Oops, there was an error opening that file", "No file selected.");
-        }
-    });    
+        } else {console.log('No file selected');}
+    })    
 };
 
 /**
  * Open the file and get its content. (Converted to string)
 */
 function openFile (file) {
-    console.log("file: " + file);
-    let content = fs.readFile(file, (err, data) => {
-        console.log('The files content is => ' + data.toString());
-        if (err) {dialog.showErrorBox("Oops, there was an error", err)};
-        applicationWindow.webContents.send('file-opened', file, content);
+    console.log('The given file path is ' + file)
+    const content = fs.readFile(file, (err, data) => {
+        if (err) {
+            console.log('there was an error');
+        } else {
+            console.log("The data is -> " + data);
+            applicationWindow.webContents.send('opened-file', data.toString());
+        }
     });
 };
 
+
+
 ipcMain.on('open-file', () => {
-        getFileFromUser();
-});
+    console.log('Requested to open file.');
+    getFileFromUser();
+})
