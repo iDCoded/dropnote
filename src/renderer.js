@@ -1,4 +1,5 @@
 const { ipcRenderer } = require("electron");
+const path = require('path');
 
 // HTML Elements
 const newFileButton = document.querySelector(".new-file-btn");
@@ -8,6 +9,9 @@ const saveFileButton = document.querySelector(".save-file-btn");
 const markdownView = document.querySelector("#markdown");
 const markdownDiv = document.querySelector(".markdown-div");
 const htmlView = document.querySelector("#html");
+
+let filePath = null;
+let originalContent = '';
 
 // SimpleMDE configuration.
 // Markdown editor
@@ -56,23 +60,33 @@ editor.codemirror.on('change', () => {
   //console.log(editor.value().toString());
 });
 
+function updateUI() {
+  let title = "Drop Note";
+  
+  // Update the title of the application.
+  if (filePath !== null) {
+    title = `${path.basename(filePath)} - ${title}`
+    ipcRenderer.send('update-title', title);
+  }
+}
+
 openFileButton.addEventListener('click', () => {
   ipcRenderer.send('open-file');
 });
 
 newFileButton.addEventListener('click', () => {
-  console.log("Created new file");
   if (editor.value().toString() !== "") {
     ipcRenderer.send('create-new-file', "non-empty");
     ipcRenderer.on('new-file:accepted', (event, msg) => {
       editor.value("");
     })
-    ipcRenderer.on('new-file:declined', (event, msg) => {
-      console.log(msg);
-    })
   }
 })
 
-ipcRenderer.on('opened-file', (event, content) => {
+ipcRenderer.on('opened-file', (event, content, file) => {
+  filePath = file;
+  originalContent = content;
+
+  updateUI();
   editor.value(content);
 })

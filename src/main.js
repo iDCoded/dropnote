@@ -1,6 +1,7 @@
 const electron = require("electron");
 const { app, BrowserWindow, dialog, ipcMain } = electron;
 
+const { productName, version } = require('../package.json');
 // fs -file system
 const fs = require("fs");
 
@@ -29,7 +30,7 @@ app.on("ready", () => {
     applicationWindow.webContents.openDevTools();
   }
 
-  console.log("App Launched Successfully");
+  console.log("App Launched Successfully \nApp version : " + version + "");
 
   // Load the HTML for the page.
   applicationWindow.loadFile("src/index.html");
@@ -73,7 +74,7 @@ function openFile(file) {
     if (err) {
       dialog.showErrorBox("Error opening that file", err.message);
     } else {
-      applicationWindow.webContents.send("opened-file", data.toString());
+      applicationWindow.webContents.send("opened-file", data.toString(), file);
     }
   });
 }
@@ -92,6 +93,7 @@ ipcMain.on("create-new-file", (event, msg) => {
       detail: "Create a new file without saving your work",
     }).then((response) => {
         if (response.response === 1) {
+            applicationWindow.setTitle(productName);
             event.sender.send('new-file:accepted', "accepted to create new file");
         } else {
             event.sender.send('new-file:declined', "creation of new file rejected");
@@ -99,3 +101,8 @@ ipcMain.on("create-new-file", (event, msg) => {
     });
   }
 });
+
+ipcMain.on('update-title', (event, title) => {
+  applicationWindow.setTitle(title);
+})
+
