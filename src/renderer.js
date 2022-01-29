@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 
 // HTML Elements
-const newFileButton = document.querySelector(".new-file-button");
+const newFileButton = document.querySelector(".new-file-btn");
 const openFileButton = document.querySelector(".open-file-btn");
 const saveFileButton = document.querySelector(".save-file-btn");
 
@@ -58,6 +58,19 @@ editor.codemirror.on('change', () => {
 
 openFileButton.addEventListener('click', () => {
   ipcRenderer.send('open-file');
+});
+
+newFileButton.addEventListener('click', () => {
+  console.log("Created new file");
+  if (editor.value().toString() !== "") {
+    ipcRenderer.send('create-new-file', "non-empty");
+    ipcRenderer.on('new-file:accepted', (event, msg) => {
+      editor.value("");
+    })
+    ipcRenderer.on('new-file:declined', (event, msg) => {
+      console.log(msg);
+    })
+  }
 })
 
 ipcRenderer.on('opened-file', (event, content) => {
