@@ -52,12 +52,8 @@ var editor = new SimpleMDE({
   tabSize: 4,
 });
 
-//markdownDiv.addEventListener('keyup', () => {
-  //console.log(editor.value().toString());
-//});
-
 editor.codemirror.on('change', () => {
-  console.log(editor.value().toString());
+  //console.log(editor.value().toString());
 });
 
 openFileButton.addEventListener('click', () => {
@@ -65,5 +61,5 @@ openFileButton.addEventListener('click', () => {
 })
 
 ipcRenderer.on('opened-file', (event, content) => {
-  console.log('File content is ->' + content);
+  editor.value(content);
 })

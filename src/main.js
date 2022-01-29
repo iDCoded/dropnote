@@ -26,7 +26,7 @@ app.on("ready", () => {
 
     if (!app.isPackaged) {
         // Open DevTools if the app is in development (a.k.a not packaged).
-    applicationWindow.webContents.openDevTools();
+        applicationWindow.webContents.openDevTools();
     }
     
     console.log('App Launched Successfully');
@@ -76,8 +76,7 @@ function openFile (file) {
     });
 };
 
-
-
+// Open the file dialog box.
 ipcMain.on('open-file', () => {
     getFileFromUser();
 })

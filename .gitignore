@@ -105,3 +105,6 @@ dist
 
 # Vim folder 
 .vim
+
+# Dist folder
+dist
