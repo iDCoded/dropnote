@@ -57,17 +57,21 @@ var editor = new SimpleMDE({
 });
 
 editor.codemirror.on('change', () => {
-  //console.log(editor.value().toString());
+  console.log('Changed');
+  updateUI(true);
 });
 
-function updateUI() {
+function updateUI(isEdited) {
   let title = "Drop Note";
   
   // Update the title of the application.
   if (filePath !== null) {
     title = `${path.basename(filePath)} - ${title}`
-    ipcRenderer.send('update-title', title);
   }
+  if (isEdited) {
+    title = "● " + title;
+  }
+  ipcRenderer.send('update-title', title);
 }
 
 openFileButton.addEventListener('click', () => {
