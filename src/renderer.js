@@ -57,7 +57,6 @@ var editor = new SimpleMDE({
 });
 
 editor.codemirror.on('change', () => {
-  console.log('Changed');
   updateUI(true);
 });
 
@@ -70,7 +69,11 @@ function updateUI(isEdited) {
   }
   if (isEdited) {
     title = "● " + title;
+    saveFileButton.disabled = false;
+  } else if (!isEdited && filePath !== null) {
+    title = `${path.basename(filePath)} + Drop Note`;
   }
+
   ipcRenderer.send('update-title', title);
 }
 
@@ -87,10 +90,18 @@ newFileButton.addEventListener('click', () => {
   }
 })
 
+saveFileButton.addEventListener('click', () => {
+  ipcRenderer.send('save-file', filePath, editor.value());
+})
+
 ipcRenderer.on('opened-file', (event, content, file) => {
   filePath = file;
   originalContent = content;
 
   updateUI();
   editor.value(content);
-})
+});
+
+ipcRenderer.on('saved-file', (event) => {
+  updateUI(false);
+});
