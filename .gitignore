@@ -108,3 +108,10 @@ dist
 
 # Dist folder
 dist
+
+# vscode folder
+.vscode
+
+electron-builder.yml
+
+yarn.lock

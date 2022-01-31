@@ -7,11 +7,13 @@
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build:dev": "electron-builder build --win --publish never",
+    "build:release": "electron-builder build --win --publish always"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iDCoded/Drop-Note.git"
+    "url": "https://github.com/iDCoded/Drop-Note.git"
   },
   "keywords": [
     "note"
@@ -23,7 +25,8 @@
   },
   "homepage": "https://github.com/iDCoded/Drop-Note#readme",
   "devDependencies": {
-    "electron": "^16.0.7"
+    "electron": "^16.0.7",
+    "electron-builder": "^22.14.5"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
