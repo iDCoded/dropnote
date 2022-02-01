@@ -1,5 +1,5 @@
 const electron = require("electron");
-const { app, BrowserWindow, dialog, ipcMain } = electron;
+const { app, BrowserWindow, dialog, ipcMain, Menu } = electron;
 
 const { productName, version } = require("../package.json");
 // fs -file system
@@ -7,6 +7,23 @@ const fs = require("fs");
 
 // declare global app window
 let applicationWindow = null;
+
+const contextMenuTemp = [
+	{
+		label: "Copy",
+		role: "copy",
+	},
+	{
+		label: "Cut",
+		role: "cut",
+	},
+	{
+		label: "Paste",
+		role: "paste",
+	},
+];
+
+const contextMenu = Menu.buildFromTemplate(contextMenuTemp);
 
 // Listen for the app to be ready.
 app.on("ready", () => {
@@ -23,6 +40,9 @@ app.on("ready", () => {
 	// Show the window once the app is ready to show.
 	applicationWindow.once("ready-to-show", () => {
 		applicationWindow.show();
+		applicationWindow.webContents.on("context-menu", () => {
+			contextMenu.popup();
+		});
 	});
 
 	if (!app.isPackaged) {
