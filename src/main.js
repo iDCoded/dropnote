@@ -2,27 +2,12 @@ const electron = require("electron");
 const { app, BrowserWindow, dialog, ipcMain, Menu } = electron;
 
 const { productName, version, repository } = require("../package.json");
+
 // fs -file system
 const fs = require("fs");
 
 // declare global app window
 let applicationWindow = null;
-
-
-const contextMenuTemp = [
-	{
-		label: "Copy",
-		role: "copy",
-	},
-	{
-		label: "Cut",
-		role: "cut",
-	},
-	{
-		label: "Paste",
-		role: "paste",
-	}
-];
 
 const applicationMenuTemp = [
 	{
@@ -31,7 +16,7 @@ const applicationMenuTemp = [
 			{
 				label: 'New File',
 				click: () => {
-					applicationWindow.webContents.send('create-new-file:app');
+					applicationWindow.webContents.send('create-new-file:app')
 				},
 				accelarator: 'Ctrl+N'
 			},
@@ -72,6 +57,22 @@ const applicationMenuTemp = [
 		]
 	}
 ]
+
+const contextMenuTemp = [
+	{
+		label: "Copy",
+		role: "copy",
+	},
+	{
+		label: "Cut",
+		role: "cut",
+	},
+	{
+		label: "Paste",
+		role: "paste",
+	}
+];
+
 
 const applicationMenu = Menu.buildFromTemplate(applicationMenuTemp);
 const contextMenu = Menu.buildFromTemplate(contextMenuTemp);
