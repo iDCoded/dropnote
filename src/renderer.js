@@ -85,6 +85,7 @@ newFileButton.addEventListener('click', () => {
   if (editor.value().toString() !== "") {
     ipcRenderer.send('create-new-file', "non-empty");
     ipcRenderer.on('new-file:accepted', (event, msg) => {
+      filePath = null;
       editor.value("");
     })
   }
