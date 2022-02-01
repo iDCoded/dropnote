@@ -107,6 +107,14 @@ ipcRenderer.on("opened-file", (event, content, file) => {
 	editor.value(content);
 });
 
+ipcRenderer.on('create-new-file:app', (event) => {
+  newFileButton.click();
+});
+
+ipcRenderer.on('save-file:app', (event) => {
+  saveFileButton.click();
+});
+
 ipcRenderer.on("saved-file", (event) => {
 	updateUI(false);
 });

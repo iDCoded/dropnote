@@ -1,12 +1,13 @@
 const electron = require("electron");
 const { app, BrowserWindow, dialog, ipcMain, Menu } = electron;
 
-const { productName, version } = require("../package.json");
+const { productName, version, repository } = require("../package.json");
 // fs -file system
 const fs = require("fs");
 
 // declare global app window
 let applicationWindow = null;
+
 
 const contextMenuTemp = [
 	{
@@ -20,9 +21,59 @@ const contextMenuTemp = [
 	{
 		label: "Paste",
 		role: "paste",
-	},
+	}
 ];
 
+const applicationMenuTemp = [
+	{
+		label: 'File',
+		submenu: [
+			{
+				label: 'New File',
+				click: () => {
+					applicationWindow.webContents.send('create-new-file:app');
+				},
+				accelarator: 'Ctrl+N'
+			},
+			{
+				label: 'Open File',
+				click: () => {
+					getFileFromUser();
+				}
+			},
+			{
+				label: "Save File",
+				click: () => {
+					applicationWindow.webContents.send('save-file:app');
+				}
+			},
+			{type: 'separator'},
+			{
+				label: 'Quit',
+				role: 'quit'
+			}
+		]
+	},
+	{
+		label: 'Edit',
+		submenu: [
+			{
+				label: 'Cut',
+				role: 'cut'
+			},
+			{
+				label: 'Copy',
+				role: 'copy'
+			},
+			{
+				label: 'Paste',
+				role: 'paste'
+			}
+		]
+	}
+]
+
+const applicationMenu = Menu.buildFromTemplate(applicationMenuTemp);
 const contextMenu = Menu.buildFromTemplate(contextMenuTemp);
 
 // Listen for the app to be ready.
@@ -43,6 +94,7 @@ app.on("ready", () => {
 		applicationWindow.webContents.on("context-menu", () => {
 			contextMenu.popup();
 		});
+		Menu.setApplicationMenu(applicationMenu);
 	});
 
 	if (!app.isPackaged) {
