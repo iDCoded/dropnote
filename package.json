@@ -8,7 +8,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"compile": "tsc",
-		"start": "electron .",
+		"launch": "electron .",
+		"start": "tsc && electron .",
 		"build:dev": "electron-builder build --win --publish never",
 		"build:release": "electron-builder build --win --publish always"
 	},

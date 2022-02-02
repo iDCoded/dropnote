@@ -1,0 +1,13 @@
+html,
+body {
+	height: 100%;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+
+	font-family: "Lato Sans", sans-serif;
+}
+
+.CodeMirror {
+	flex: 1;
+}
