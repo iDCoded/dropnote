@@ -1,35 +1,36 @@
 {
-  "name": "dropnote",
-  "version": "1.0.0",
-  "productName": "Drop Note",
-  "icon": "icons/dropnote.ico",
-  "description": "Note-taking application.",
-  "main": "src/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
-    "build:dev": "electron-builder build --win --publish never",
-    "build:release": "electron-builder build --win --publish always"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/iDCoded/Drop-Note.git"
-  },
-  "keywords": [
-    "note"
-  ],
-  "author": "Dhruv Anand",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/iDCoded/Drop-Note/issues"
-  },
-  "homepage": "https://github.com/iDCoded/Drop-Note#readme",
-  "devDependencies": {
-    "electron": "^16.0.7",
-    "electron-builder": "^22.14.5"
-  },
-  "dependencies": {
-    "@electron/remote": "^2.0.1",
-    "simplemde": "^1.11.2"
-  }
+	"name": "dropnote",
+	"version": "1.0.0",
+	"productName": "Drop Note",
+	"icon": "icons/dropnote.ico",
+	"description": "Note-taking application.",
+	"main": "out/main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"compile": "tsc",
+		"start": "electron .",
+		"build:dev": "electron-builder build --win --publish never",
+		"build:release": "electron-builder build --win --publish always"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/iDCoded/Drop-Note.git"
+	},
+	"keywords": [
+		"note"
+	],
+	"author": "Dhruv Anand",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/iDCoded/Drop-Note/issues"
+	},
+	"homepage": "https://github.com/iDCoded/Drop-Note#readme",
+	"devDependencies": {
+		"electron": "^16.0.7",
+		"electron-builder": "^22.14.5"
+	},
+	"dependencies": {
+		"@electron/remote": "^2.0.1",
+		"simplemde": "^1.11.2"
+	}
 }

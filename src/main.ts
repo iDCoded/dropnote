@@ -1,64 +1,61 @@
-const electron = require("electron");
-const { app, BrowserWindow, dialog, ipcMain, Menu } = electron;
+import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
 
 const { productName, version, repository } = require("../package.json");
 
-// fs -file system
 const fs = require("fs");
 
-// declare global app window
-let applicationWindow = null;
+let applicationWindow: BrowserWindow;
 
-const applicationMenuTemp = [
+const applicationMenuTemp: any = [
 	{
-		label: 'File',
+		label: "File",
 		submenu: [
 			{
-				label: 'New File',
+				label: "New File",
 				click: () => {
-					applicationWindow.webContents.send('create-new-file:app')
+					applicationWindow.webContents.send("create-new-file:app");
 				},
-				accelarator: 'Ctrl+N'
+				accelarator: "Ctrl+N",
 			},
 			{
-				label: 'Open File',
+				label: "Open File",
 				click: () => {
 					getFileFromUser();
-				}
+				},
 			},
 			{
 				label: "Save File",
 				click: () => {
-					applicationWindow.webContents.send('save-file:app');
-				}
+					applicationWindow.webContents.send("save-file:app");
+				},
 			},
-			{type: 'separator'},
+			{ type: "separator" },
 			{
-				label: 'Quit',
-				role: 'quit'
-			}
-		]
+				label: "Quit",
+				role: "quit",
+			},
+		],
 	},
 	{
-		label: 'Edit',
+		label: "Edit",
 		submenu: [
 			{
-				label: 'Cut',
-				role: 'cut'
+				label: "Cut",
+				role: "cut",
 			},
 			{
-				label: 'Copy',
-				role: 'copy'
+				label: "Copy",
+				role: "copy",
 			},
 			{
-				label: 'Paste',
-				role: 'paste'
-			}
-		]
-	}
-]
+				label: "Paste",
+				role: "paste",
+			},
+		],
+	},
+];
 
-const contextMenuTemp = [
+const contextMenuTemp: any = [
 	{
 		label: "Copy",
 		role: "copy",
@@ -70,26 +67,21 @@ const contextMenuTemp = [
 	{
 		label: "Paste",
 		role: "paste",
-	}
+	},
 ];
-
 
 const applicationMenu = Menu.buildFromTemplate(applicationMenuTemp);
 const contextMenu = Menu.buildFromTemplate(contextMenuTemp);
 
-// Listen for the app to be ready.
 app.on("ready", () => {
-	// Create a BrowserWindow when the app becomes ready.
 	applicationWindow = new BrowserWindow({
 		show: false,
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
-			enableRemoteModule: true,
 		},
 	});
 
-	// Show the window once the app is ready to show.
 	applicationWindow.once("ready-to-show", () => {
 		applicationWindow.show();
 		applicationWindow.webContents.on("context-menu", () => {
@@ -98,30 +90,26 @@ app.on("ready", () => {
 		Menu.setApplicationMenu(applicationMenu);
 	});
 
+	// Open Developer Tools if the app is in Development.
 	if (!app.isPackaged) {
-		// Open DevTools if the app is in development (a.k.a not packaged).
 		applicationWindow.webContents.openDevTools();
 	}
 
-	console.log("App Launched Successfully \nApp version : " + version + "");
+	console.log("App launched successfully \nApp version : " + version);
 
-	// Load the HTML for the page.
 	applicationWindow.loadFile("src/index.html");
 
 	applicationWindow.on("closed", () => {
-		applicationWindow = null;
+		applicationWindow.destroy();
 	});
 });
 
 app.on("window-all-closed", () => {
 	if (process.platform !== "darwin") app.quit();
-	console.log("Successfully Closed ");
+	console.log("Successfully Closed");
 });
 
-/**
- * @summary Get the file from user.
- */
-function getFileFromUser() {
+const getFileFromUser = () => {
 	dialog
 		.showOpenDialog(applicationWindow, {
 			properties: ["openFile"],
@@ -130,26 +118,34 @@ function getFileFromUser() {
 				{ name: "Text Files", extensions: ["txt"] },
 			],
 		})
-		.then((response) => {
-			if (!response.canceled) {
-				openFile(response.filePaths[0]);
+		.then((res) => {
+			if (!res.canceled) {
+				openFile(res.filePaths[0]);
 			} else {
 				dialog.showErrorBox("Couldn't open file", "No file selected");
 			}
 		});
-}
+};
 
 /**
- * Open the file and get its content. (Converted to string)
+ * Opens the file and reads its contents.
+ * @param file Path of the file
  */
-function openFile(file) {
-	fs.readFile(file, (err, data) => {
-		if (err) {
-			dialog.showErrorBox("Error opening that file", err.message);
-		} else {
-			applicationWindow.webContents.send("opened-file", data.toString(), file);
+function openFile(file: string) {
+	fs.readFile(
+		file,
+		(err: { message: string }, data: { toString: () => any }) => {
+			if (err) {
+				dialog.showErrorBox("Error opening that file", err.message);
+			} else {
+				applicationWindow.webContents.send(
+					"opened-file",
+					data.toString(),
+					file
+				);
+			}
 		}
-	});
+	);
 }
 
 // Open the file dialog box.
