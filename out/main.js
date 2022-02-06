@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const { productName, version, repository } = require("../package.json");
-const fs = require("fs");
+const fs_1 = __importDefault(require("fs"));
 let applicationWindow;
 const applicationMenuTemp = [
     {
@@ -65,6 +68,10 @@ const contextMenuTemp = [
         label: "Paste",
         role: "paste",
     },
+    {
+        label: "Select All",
+        role: "selectall",
+    },
 ];
 const applicationMenu = electron_1.Menu.buildFromTemplate(applicationMenuTemp);
 const contextMenu = electron_1.Menu.buildFromTemplate(contextMenuTemp);
@@ -121,7 +128,7 @@ const getFileFromUser = () => {
  * @param file Path of the file
  */
 function openFile(file) {
-    fs.readFile(file, (err, data) => {
+    fs_1.default.readFile(file, (err, data) => {
         if (err) {
             electron_1.dialog.showErrorBox("Error opening that file", err.message);
         }
@@ -159,7 +166,7 @@ electron_1.ipcMain.on("update-title", (event, title) => {
 });
 electron_1.ipcMain.on("save-file", (event, file, content) => {
     if (file !== null) {
-        fs.writeFileSync(file, content);
+        fs_1.default.writeFileSync(file, content);
     } // console.log('File has been saved successfully to ' + file);
     else if (file === null) {
         electron_1.dialog.showErrorBox("Unable to save file", "File does not exist");

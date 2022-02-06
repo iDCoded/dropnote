@@ -1,13 +1,14 @@
 html,
 body {
 	height: 100%;
-	display: flex;
-	flex: 1;
-	flex-direction: column;
 
 	font-family: "Lato Sans", sans-serif;
 }
 
-.CodeMirror {
-	flex: 1;
+.sidebar {
+	position: fixed;
+	left: 0;
+	width: 250px;
+	height: 100%;
+	background: #042331;
 }

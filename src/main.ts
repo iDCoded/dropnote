@@ -2,7 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
 
 const { productName, version, repository } = require("../package.json");
 
-const fs = require("fs");
+import fs from "fs";
 
 let applicationWindow: BrowserWindow;
 
@@ -68,10 +68,15 @@ const contextMenuTemp: any = [
 		label: "Paste",
 		role: "paste",
 	},
+	{
+		label: "Select All",
+		role: "selectall",
+	},
 ];
 
-const applicationMenu = Menu.buildFromTemplate(applicationMenuTemp);
-const contextMenu = Menu.buildFromTemplate(contextMenuTemp);
+const applicationMenu: Electron.Menu =
+	Menu.buildFromTemplate(applicationMenuTemp);
+const contextMenu: Electron.Menu = Menu.buildFromTemplate(contextMenuTemp);
 
 app.on("ready", () => {
 	applicationWindow = new BrowserWindow({
@@ -131,21 +136,14 @@ const getFileFromUser = () => {
  * Opens the file and reads its contents.
  * @param file Path of the file
  */
-function openFile(file: string) {
-	fs.readFile(
-		file,
-		(err: { message: string }, data: { toString: () => any }) => {
-			if (err) {
-				dialog.showErrorBox("Error opening that file", err.message);
-			} else {
-				applicationWindow.webContents.send(
-					"opened-file",
-					data.toString(),
-					file
-				);
-			}
+function openFile(file: string): void {
+	fs.readFile(file, (err, data) => {
+		if (err) {
+			dialog.showErrorBox("Error opening that file", err.message);
+		} else {
+			applicationWindow.webContents.send("opened-file", data.toString(), file);
 		}
-	);
+	});
 }
 
 // Open the file dialog box.

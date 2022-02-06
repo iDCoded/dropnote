@@ -2,19 +2,23 @@ const { ipcRenderer } = require("electron");
 const path = require("path");
 
 // HTML Elements
-const newFileButton = document.querySelector(".new-file-btn");
-const openFileButton = document.querySelector(".open-file-btn");
-const saveFileButton = document.querySelector(".save-file-btn");
+const newFileButton: HTMLInputElement | null =
+	document.querySelector(".new-file-btn");
+const openFileButton: HTMLInputElement | null =
+	document.querySelector(".open-file-btn");
+const saveFileButton: HTMLInputElement | null =
+	document.querySelector(".save-file-btn");
 
 const markdownView = document.querySelector("#markdown");
 const markdownDiv = document.querySelector(".markdown-div");
 const htmlView = document.querySelector("#html");
 
-let filePath = null;
+let filePath: String | null = null;
 let originalContent = "";
 
 // SimpleMDE configuration.
 // Markdown editor
+// @ts-ignore: Cannot find name 'SimpleMDE'
 var editor = new SimpleMDE({
 	autofocus: true,
 	element: document.querySelector("#markdown"),
@@ -43,10 +47,6 @@ var editor = new SimpleMDE({
 		singleLineBreaks: false,
 		codeSyntaxHighlighting: true,
 	},
-	renderingConfig: {
-		singleLineBreaks: false,
-		codeSyntaxHighlighting: true,
-	},
 	shortcuts: {
 		drawTable: "Cmd-Alt-T",
 	},
@@ -60,7 +60,7 @@ editor.codemirror.on("change", () => {
 	updateUI(true);
 });
 
-function updateUI(isEdited) {
+function updateUI(isEdited?: boolean) {
 	let title = "Drop Note";
 
 	// Update the title of the application.
@@ -69,9 +69,10 @@ function updateUI(isEdited) {
 	}
 	if (isEdited) {
 		title = "● " + title;
+		// @ts-ignore: Object is possibly 'null'
 		saveFileButton.disabled = false;
 	} else if (!isEdited) {
-    title = "Drop Note";
+		title = "Drop Note";
 		if (filePath !== null) {
 			title = `${path.basename(filePath)} + Drop Note`;
 		}
@@ -79,22 +80,22 @@ function updateUI(isEdited) {
 
 	ipcRenderer.send("update-title", title);
 }
-
+// @ts-ignore: Object is possibly 'null'
 openFileButton.addEventListener("click", () => {
 	ipcRenderer.send("open-file");
 });
-
+// @ts-ignore: Object is possibly 'null'
 newFileButton.addEventListener("click", () => {
 	if (editor.value().toString() !== "") {
 		ipcRenderer.send("create-new-file", "non-empty");
 		ipcRenderer.on("new-file:accepted", (event, msg) => {
-      filePath = null;
+			filePath = null;
 			updateUI(false);
 			editor.value("");
 		});
 	}
 });
-
+// @ts-ignore: Object is possibly 'null'
 saveFileButton.addEventListener("click", () => {
 	ipcRenderer.send("save-file", filePath, editor.value());
 });
@@ -107,12 +108,14 @@ ipcRenderer.on("opened-file", (event, content, file) => {
 	editor.value(content);
 });
 
-ipcRenderer.on('create-new-file:app', (event) => {
-  newFileButton.click();
+ipcRenderer.on("create-new-file:app", (event) => {
+	// @ts-ignore: Object is possibly 'null'
+	newFileButton.click();
 });
 
-ipcRenderer.on('save-file:app', (event) => {
-  saveFileButton.click();
+ipcRenderer.on("save-file:app", (event) => {
+	// @ts-ignore: Object is possibly 'null'
+	saveFileButton.click();
 });
 
 ipcRenderer.on("saved-file", (event) => {
