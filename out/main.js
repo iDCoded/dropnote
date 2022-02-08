@@ -119,9 +119,6 @@ electron_1.app.on("ready", () => {
     }
     console.log("App launched successfully \nApp version : " + version);
     applicationWindow.loadFile("src/index.html");
-    applicationWindow.on("closed", () => {
-        applicationWindow.destroy();
-    });
 });
 electron_1.app.on("window-all-closed", () => {
     if (process.platform !== "darwin")

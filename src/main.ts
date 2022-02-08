@@ -1,4 +1,12 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
+import {
+	app,
+	BrowserWindow,
+	dialog,
+	ipcMain,
+	Menu,
+	MenuItem,
+	shell,
+} from "electron";
 
 const { productName, version, repository } = require("../package.json");
 
@@ -128,10 +136,6 @@ app.on("ready", () => {
 	console.log("App launched successfully \nApp version : " + version);
 
 	applicationWindow.loadFile("src/index.html");
-
-	applicationWindow.on("closed", () => {
-		applicationWindow.close();
-	});
 });
 
 app.on("window-all-closed", () => {
