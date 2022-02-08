@@ -54,6 +54,29 @@ const applicationMenuTemp = [
             },
         ],
     },
+    {
+        label: "Help",
+        submenu: [
+            {
+                label: "Repository",
+                click: () => {
+                    electron_1.shell.openExternal(repository.url);
+                },
+            },
+            {
+                label: "License",
+                click: () => {
+                    electron_1.shell.openExternal("https://github.com/iDCoded/Drop-Note/blob/main/LICENSE");
+                },
+            },
+            {
+                label: `About ${productName}`,
+                click: () => {
+                    displayAppInfo();
+                },
+            },
+        ],
+    },
 ];
 const contextMenuTemp = [
     {
@@ -135,6 +158,15 @@ function openFile(file) {
         else {
             applicationWindow.webContents.send("opened-file", data.toString(), file);
         }
+    });
+}
+/**
+ * displayAppInfo - Display the info of the App
+ */
+function displayAppInfo() {
+    electron_1.dialog.showMessageBox(applicationWindow, {
+        title: "Drop Note",
+        message: "A note taking built with web technologies",
     });
 }
 // Open the file dialog box.

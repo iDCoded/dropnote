@@ -9,7 +9,7 @@ const openFileButton: HTMLInputElement | null =
 const saveFileButton: HTMLInputElement | null =
 	document.querySelector(".save-file-btn");
 
-const markdownView = document.querySelector("#markdown");
+const markdownView = document.querySelector("#markdown")
 const markdownDiv = document.querySelector(".markdown-div");
 const htmlView = document.querySelector("#html");
 
@@ -19,7 +19,7 @@ let originalContent = "";
 // SimpleMDE configuration.
 // Markdown editor
 // @ts-ignore: Cannot find name 'SimpleMDE'
-var editor = new SimpleMDE({
+var editor: SimpleMDE = new SimpleMDE({
 	autofocus: true,
 	element: document.querySelector("#markdown"),
 	forceSync: true,
@@ -88,7 +88,7 @@ openFileButton.addEventListener("click", () => {
 newFileButton.addEventListener("click", () => {
 	if (editor.value().toString() !== "") {
 		ipcRenderer.send("create-new-file", "non-empty");
-		ipcRenderer.on("new-file:accepted", (event, msg) => {
+		ipcRenderer.on("new-file:accepted", (event: Electron.IpcRendererEvent, msg: String) => {
 			filePath = null;
 			updateUI(false);
 			editor.value("");

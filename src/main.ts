@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from "electron";
 
 const { productName, version, repository } = require("../package.json");
 
@@ -50,6 +50,31 @@ const applicationMenuTemp: any = [
 			{
 				label: "Paste",
 				role: "paste",
+			},
+		],
+	},
+	{
+		label: "Help",
+		submenu: [
+			{
+				label: "Repository",
+				click: () => {
+					shell.openExternal(repository.url);
+				},
+			},
+			{
+				label: "License",
+				click: () => {
+					shell.openExternal(
+						"https://github.com/iDCoded/Drop-Note/blob/main/LICENSE"
+					);
+				},
+			},
+			{
+				label: `About ${productName}`,
+				click: () => {
+					displayAppInfo();
+				},
 			},
 		],
 	},
@@ -105,7 +130,7 @@ app.on("ready", () => {
 	applicationWindow.loadFile("src/index.html");
 
 	applicationWindow.on("closed", () => {
-		applicationWindow.destroy();
+		applicationWindow.close();
 	});
 });
 
@@ -143,6 +168,16 @@ function openFile(file: string): void {
 		} else {
 			applicationWindow.webContents.send("opened-file", data.toString(), file);
 		}
+	});
+}
+
+/**
+ * displayAppInfo - Display the info of the App
+ */
+function displayAppInfo() {
+	dialog.showMessageBox(applicationWindow, {
+		title: "Drop Note",
+		message: "A note taking built with web technologies",
 	});
 }
 
