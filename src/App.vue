@@ -1,5 +1,10 @@
 <template>
 	<img alt="Vue logo" src="./assets/logo.png" />
+	<img
+		src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg"
+		height="200"
+		width="200"
+	/>
 	<HelloWorld msg="Welcome to Your Vue.js + Electron + TypeScript App" />
 </template>
 

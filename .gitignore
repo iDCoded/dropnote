@@ -4,6 +4,7 @@ node_modules
 build
 diagrams
 
+electron-builder.yml
 
 # local env files
 .env.local

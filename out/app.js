@@ -7,7 +7,6 @@ let appWin;
 let isDev = !electron_1.app.isPackaged; // Check if the application is packaged or not.
 electron_1.app.on("ready", () => {
     appWin = new electron_1.BrowserWindow({
-        title: "Drop-Note",
         width: 800,
         height: 600,
         webPreferences: {
