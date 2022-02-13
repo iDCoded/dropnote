@@ -6,7 +6,9 @@
 	"scripts": {
 		"serve": "vue-cli-service serve",
 		"build": "vue-cli-service build",
-		"start": "npm run build && electron ."
+		"compile": "tsc",
+		"launch": "electron .",
+		"start": "npm run compile && npm run build && electron ."
 	},
 	"dependencies": {
 		"core-js": "^3.6.5",
