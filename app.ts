@@ -1,5 +1,8 @@
 /* Electorn Main Process */
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
+import { join as pathJoin } from "path";
+// Initialize Electron Remote
+require("@electron/remote/main").initialize();
 import { name as appName, version as appVersion } from "./package.json";
 
 let appWin: BrowserWindow;
@@ -12,6 +15,8 @@ app.on("ready", () => {
 		height: 600,
 		webPreferences: {
 			nodeIntegration: true, // Enable Node Integration
+			contextIsolation: false,
+			preload: pathJoin(__dirname, "preload.js"),
 		},
 		show: false, // Do not show the application window by default.
 	});
@@ -21,7 +26,7 @@ app.on("ready", () => {
 
 	// Show the application windown only when it is ready to show.
 	appWin.once("ready-to-show", () => {
-		console.log(`Launched ${appName} : Version ${appVersion}`);
+		console.log(`Launched ${appName} \nVersion : ${appVersion}`);
 		appWin.show(); // Show the window.
 	});
 
@@ -38,4 +43,10 @@ app.on("window-all-closed", () => {
 	// Check if the platform is not MacOS (darwin).
 	if (process.platform !== "darwin") app.quit();
 	console.log(`Successfully Closed ${appName}.`);
+});
+
+/* Inter Process Communication (IPC) */
+
+ipcMain.on("app:create-new-file", (event, fileName: string) => {
+	console.log(fileName);
 });
