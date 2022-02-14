@@ -15,6 +15,7 @@
         "build:deploy": "electron-builder build --win --publish always"
     },
     "dependencies": {
+        "@electron/remote": "^2.0.4",
         "core-js": "^3.6.5",
         "vue": "^3.0.0"
     },

@@ -1,21 +1,20 @@
 <template>
-	<img alt="Vue logo" src="./assets/logo.png" />
-	<img
-		src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg"
-		height="200"
-		width="200"
-	/>
-	<HelloWorld msg="Welcome to Your Vue.js + Electron + TypeScript App" />
+	<WelcomeScreen v-on:create-new-file="createNewFile" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
-
+import WelcomeScreen from "./components/WelcomeScreen.vue";
 export default defineComponent({
 	name: "App",
 	components: {
-		HelloWorld,
+		WelcomeScreen,
+	},
+	methods: {
+		createNewFile(fileName: string) {
+			console.log("Created new file : " + fileName);
+			ipcRenderer.send("app:create-new-file", fileName);
+		},
 	},
 });
 </script>
