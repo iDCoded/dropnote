@@ -1,5 +1,8 @@
 <template>
-	<WelcomeScreen v-on:create-new-file="createNewFile" />
+	<WelcomeScreen
+		v-on:create-new-file="createNewFile"
+		v-on:open-file="openFile"
+	/>
 </template>
 
 <script lang="ts">
@@ -14,6 +17,9 @@ export default defineComponent({
 		createNewFile(fileName: string) {
 			console.log("Created new file : " + fileName);
 			ipcRenderer.send("app:create-new-file", fileName);
+		},
+		openFile() {
+			ipcRenderer.send("app:open-file");
 		},
 	},
 });

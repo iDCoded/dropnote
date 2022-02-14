@@ -1,9 +1,9 @@
 /* Electorn Main Process */
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import { join as pathJoin } from "path";
 // Initialize Electron Remote
 require("@electron/remote/main").initialize();
-import { name as appName, version as appVersion } from "./package.json";
+import { productName as appName, version as appVersion } from "./package.json";
 
 let appWin: BrowserWindow;
 
@@ -45,8 +45,44 @@ app.on("window-all-closed", () => {
 	console.log(`Successfully Closed ${appName}.`);
 });
 
+/* Functions & Methods */
+
+/**
+ * Open a dialog box to select file
+ */
+const getFileFromUser = () => {
+	dialog
+		.showOpenDialog(appWin, {
+			properties: ["openFile"],
+			filters: [
+				{ name: "Markdown Files", extensions: ["md", "markdown"] },
+				{ name: "Text Files", extensions: ["txt"] },
+			],
+		})
+		// res.filePaths -> File paths of the selected files.
+		.then((res) => {
+			// Open the selected file if the process has not been cancelled.
+			if (!res.canceled) {
+				console.log(res.filePaths[0]);
+			} else {
+				dialog.showErrorBox("Couldn't open File", "No File Selected");
+			}
+		});
+};
+
+/*
+function openFile(file: string): void {
+	fs.readFile(file, (err, data) => {
+		if (err) {
+			dialog.showErrorBox("Error opening that file", err.message);
+		} else {
+			applicationWindow.webContents.send("opened-file", data.toString(), file);
+		}
+	});
+} */
+
 /* Inter Process Communication (IPC) */
 
-ipcMain.on("app:create-new-file", (event, fileName: string) => {
-	console.log(fileName);
+ipcMain.on("app:open-file", (event) => {
+	getFileFromUser();
 });
