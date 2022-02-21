@@ -27,5 +27,5 @@
 		"tests/**/*.ts",
 		"tests/**/*.tsx"
 	],
-	"exclude": ["node_modules", "package.json"]
+	"exclude": ["node_modules", "package"]
 }

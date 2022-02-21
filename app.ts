@@ -1,5 +1,6 @@
 /* Electorn Main Process */
 import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import { readFile } from "fs";
 import { join as pathJoin } from "path";
 // Initialize Electron Remote
 require("@electron/remote/main").initialize();
@@ -64,22 +65,28 @@ const getFileFromUser = () => {
 			// Open the selected file if the process has not been cancelled.
 			if (!res.canceled) {
 				console.log(res.filePaths[0]);
+				openFile(res.filePaths[0]);
 			} else {
 				dialog.showErrorBox("Couldn't open File", "No File Selected");
 			}
 		});
 };
 
-/*
-function openFile(file: string): void {
-	fs.readFile(file, (err, data) => {
+/**
+ * Open the file by the specified path and read its contents.
+ * @param filePath Path (absolute) of the file to be read.
+ */
+const openFile = (filePath: string) => {
+	readFile(filePath, "utf-8", (err, data) => {
 		if (err) {
 			dialog.showErrorBox("Error opening that file", err.message);
 		} else {
-			applicationWindow.webContents.send("opened-file", data.toString(), file);
+			// Send the 'opened-file' message to the render process.
+			// Send the data of the file to the render process along with the path of the file.
+			appWin.webContents.send("opened-file", data.toString(), filePath);
 		}
 	});
-} */
+};
 
 /* Inter Process Communication (IPC) */
 
