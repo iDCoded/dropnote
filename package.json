@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@electron/remote": "^2.0.4",
 		"core-js": "^3.6.5",
+		"simplemde": "^1.11.2",
 		"vue": "^3.0.0"
 	},
 	"devDependencies": {

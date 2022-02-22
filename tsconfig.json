@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
+		"target": "ESNext",
 		"module": "CommonJS",
 		"outDir": "out", // The output directory.
 		"strict": true,
