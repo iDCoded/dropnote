@@ -1,17 +1,28 @@
 <template>
 	<WelcomeScreen
+		v-if="!fileOpened"
 		v-on:create-new-file="createNewFile"
 		v-on:open-file="openFile"
 	/>
+	<Editor v-if="fileOpened" v-bind:editor-text="text" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import WelcomeScreen from "./components/WelcomeScreen.vue";
+import Editor from "./components/Editor.vue";
 export default defineComponent({
 	name: "App",
+	data: () => {
+		return {
+			fileOpened: false,
+			text: "",
+			filePath: "",
+		};
+	},
 	components: {
 		WelcomeScreen,
+		Editor,
 	},
 	methods: {
 		createNewFile(fileName: string) {
@@ -20,6 +31,11 @@ export default defineComponent({
 		},
 		openFile() {
 			ipcRenderer.send("app:open-file");
+			ipcRenderer.on("opened-file", (e, content, filePath) => {
+				this.fileOpened = true;
+				this.text = content;
+				this.filePath = filePath;
+			});
 		},
 	},
 });
