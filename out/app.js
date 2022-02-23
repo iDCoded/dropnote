@@ -27,9 +27,21 @@ electron_1.app.on("ready", () => {
         console.log(`Launched ${package_json_1.productName} \nVersion : ${package_json_1.version}`);
         appWin.show(); // Show the window.
     });
-    // Open the DevTools if the application is in development.
     if (isDev) {
+        // Open the DevTools if the application is in development.
         appWin.webContents.openDevTools();
+        // Map F5 to reload the application.
+        electron_1.globalShortcut.register("f5", () => {
+            let currentTime = new Date();
+            console.log(`Reloaded @ ${currentTime.getHours() +
+                ":" +
+                currentTime.getMinutes() +
+                ":" +
+                currentTime.getSeconds() +
+                "." +
+                currentTime.getMilliseconds()}`);
+            appWin.reload();
+        });
     }
 });
 // Quit the app directly if it is not on MacOS

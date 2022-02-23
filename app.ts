@@ -1,7 +1,8 @@
 /* Electorn Main Process */
-import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from "electron";
 import { readFile } from "fs";
 import { join as pathJoin } from "path";
+
 // Initialize Electron Remote
 require("@electron/remote/main").initialize();
 import { productName as appName, version as appVersion } from "./package.json";
@@ -31,9 +32,25 @@ app.on("ready", () => {
 		appWin.show(); // Show the window.
 	});
 
-	// Open the DevTools if the application is in development.
 	if (isDev) {
+		// Open the DevTools if the application is in development.
 		appWin.webContents.openDevTools();
+		// Map F5 to reload the application.
+		globalShortcut.register("f5", () => {
+			let currentTime = new Date();
+			console.log(
+				`Reloaded @ ${
+					currentTime.getHours() +
+					":" +
+					currentTime.getMinutes() +
+					":" +
+					currentTime.getSeconds() +
+					"." +
+					currentTime.getMilliseconds()
+				}`
+			);
+			appWin.reload();
+		});
 	}
 });
 
