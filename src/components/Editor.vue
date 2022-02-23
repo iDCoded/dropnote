@@ -1,5 +1,11 @@
 <template>
-	<textarea name="markdown" id="md" v-model="editorText"></textarea>
+	<textarea
+		name="markdown"
+		id="md"
+		rows="20"
+		cols="100"
+		v-model="editorText"
+	></textarea>
 </template>
 
 <script lang="ts">
@@ -12,3 +18,10 @@ export default defineComponent({
 	},
 });
 </script>
+
+<style scoped>
+textarea {
+	max-width: 95%;
+	resize: vertical;
+}
+</style>
