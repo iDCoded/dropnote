@@ -10,6 +10,7 @@
 		"build": "vue-cli-service build",
 		"compile": "tsc",
 		"launch": "electron .",
+		"main": "npm run compile && npm run launch",
 		"start": "npm run compile && npm run build && electron .",
 		"build:dev": "electron-builder build --win --publish never",
 		"build:deploy": "electron-builder build --win --publish always"
