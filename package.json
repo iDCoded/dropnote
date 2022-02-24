@@ -9,6 +9,7 @@
 		"serve": "vue-cli-service serve",
 		"build": "vue-cli-service build",
 		"compile": "tsc",
+		"watch": "tsc -w",
 		"launch": "electron .",
 		"main": "npm run compile && npm run launch",
 		"start": "npm run compile && npm run build && electron .",
