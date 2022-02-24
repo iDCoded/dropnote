@@ -1,4 +1,5 @@
 <template>
+	<button class="back button is-link">x</button>
 	<textarea
 		name="markdown"
 		id="md"
@@ -8,15 +9,9 @@
 	></textarea>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-	name: "Editor",
-	props: {
-		editorText: String,
-	},
-});
+<script setup lang="ts">
+import { ref, computed, toRefs } from "vue";
+const props = defineProps({ editorText: String });
 </script>
 
 <style scoped>
