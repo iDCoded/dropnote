@@ -7,7 +7,13 @@ const path_1 = require("path");
 // Initialize Electron Remote
 require("@electron/remote/main").initialize();
 const package_json_1 = require("./package.json");
+/**
+ * Main browser windows of the application that is displayed.
+ */
 let appWin;
+/**
+ * Is the application in development?
+ */
 let isDev = !electron_1.app.isPackaged; // Check if the application is packaged or not.
 electron_1.app.on("ready", () => {
     appWin = new electron_1.BrowserWindow({
@@ -20,8 +26,18 @@ electron_1.app.on("ready", () => {
         },
         show: false,
     });
-    // Load the HTML from the final Vue build
-    appWin.loadFile("./dist/index.html");
+    if (isDev) {
+        // Load localhost if the application is in development
+        // for hot reload of application.
+        appWin.loadURL("http://localhost:8080/");
+        console.log("Loaded HTML from localhost");
+    }
+    else {
+        // Load the main index HTML file
+        // if the application is in production.
+        appWin.loadFile("./dist/index.html");
+        console.log("Loaded HTML from dist");
+    }
     // Show the application windown only when it is ready to show.
     appWin.once("ready-to-show", () => {
         console.log(`Launched ${package_json_1.productName} \nVersion : ${package_json_1.version}`);
@@ -55,7 +71,7 @@ electron_1.app.on("window-all-closed", () => {
 });
 /* Functions & Methods */
 /**
- * Open a dialog box to select file
+ * Open a dialog box to select file.
  */
 const getFileFromUser = () => {
     electron_1.dialog
@@ -95,6 +111,7 @@ const openFile = (filePath) => {
     });
 };
 /* Inter Process Communication (IPC) */
+// Get the file from the user.
 electron_1.ipcMain.on("app:open-file", (event) => {
     getFileFromUser();
 });

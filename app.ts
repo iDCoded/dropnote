@@ -1,14 +1,20 @@
 /* Electorn Main Process */
 import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from "electron";
 import { readFile } from "fs";
-import { join as pathJoin } from "path";
+import { join as joinPath } from "path";
 
 // Initialize Electron Remote
 require("@electron/remote/main").initialize();
 import { productName as appName, version as appVersion } from "./package.json";
 
+/**
+ * Main browser windows of the application that is displayed.
+ */
 let appWin: BrowserWindow;
 
+/**
+ * Is the application in development?
+ */
 let isDev = !app.isPackaged; // Check if the application is packaged or not.
 
 app.on("ready", () => {
@@ -18,14 +24,22 @@ app.on("ready", () => {
 		webPreferences: {
 			nodeIntegration: true, // Enable Node Integration
 			contextIsolation: false,
-			preload: pathJoin(__dirname, "preload.js"),
+			preload: joinPath(__dirname, "preload.js"),
 		},
 		show: false, // Do not show the application window by default.
 	});
 
-	// Load the HTML from the final Vue build
-	appWin.loadFile("./dist/index.html");
-
+	if (isDev) {
+		// Load localhost if the application is in development
+		// for hot reload of application.
+		appWin.loadURL("http://localhost:8080/");
+		console.log("Loaded HTML from localhost");
+	} else {
+		// Load the main index HTML file
+		// if the application is in production.
+		appWin.loadFile("./dist/index.html");
+		console.log("Loaded HTML from dist");
+	}
 	// Show the application windown only when it is ready to show.
 	appWin.once("ready-to-show", () => {
 		console.log(`Launched ${appName} \nVersion : ${appVersion}`);
@@ -66,7 +80,7 @@ app.on("window-all-closed", () => {
 /* Functions & Methods */
 
 /**
- * Open a dialog box to select file
+ * Open a dialog box to select file.
  */
 const getFileFromUser = () => {
 	dialog
@@ -107,6 +121,7 @@ const openFile = (filePath: string) => {
 
 /* Inter Process Communication (IPC) */
 
+// Get the file from the user.
 ipcMain.on("app:open-file", (event) => {
 	getFileFromUser();
 });
