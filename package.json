@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "electron": "^16.0.7",
     "vue": "^3.2.25"
   },
   "devDependencies": {
