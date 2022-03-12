@@ -15,6 +15,23 @@ export default defineComponent({
 </script>
 
 <template>
-	<Header />
-	<NewFileButton v-on:new-file="newFile" />
+	<div class="header">
+		<Header />
+	</div>
+	<div class="buttons">
+		<NewFileButton v-on:new-file="newFile" class="btn" />
+	</div>
 </template>
+
+<style scoped>
+.header {
+	padding-top: 60px;
+}
+.buttons {
+	padding-top: 40px;
+	font-family: "Noto Sans", sans-serif;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+</style>
