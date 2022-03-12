@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const package_json_1 = require("./package.json");
 const path_1 = __importDefault(require("path"));
+const fs_1 = require("fs");
 let appWin;
 let isDev = !electron_1.app.isPackaged;
 electron_1.app.on("ready", () => {
@@ -40,6 +41,37 @@ electron_1.app.on("ready", () => {
         appWin.show();
     });
 });
+/* Functions */
+const getFileFromUser = () => {
+    electron_1.dialog
+        .showOpenDialog(appWin, {
+        properties: ["openFile"],
+        filters: [
+            { name: "Markdown Files", extensions: ["md", "markdown"] },
+            { name: "Text Files", extensions: ["txt"] },
+        ],
+    })
+        .then((res) => {
+        if (!res.canceled) {
+            openFile(res.filePaths[0]);
+        }
+        else if (res.canceled) {
+            electron_1.dialog.showErrorBox("Unable to open file", "No file selected");
+        }
+    });
+};
+const openFile = (filePath) => {
+    (0, fs_1.readFile)(filePath, "utf-8", (err, data) => {
+        if (err) {
+            electron_1.dialog.showErrorBox(err.name, err.message);
+        }
+        else {
+            appWin.webContents.send("file:opened", data.toString(), filePath);
+        }
+    });
+};
 /* IPC */
-electron_1.ipcMain.on("file:new", (_e, arg) => { });
+electron_1.ipcMain.on("file:new", (_e, fileName) => {
+    getFileFromUser();
+});
 //# sourceMappingURL=app.js.map

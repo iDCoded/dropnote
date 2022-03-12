@@ -5,9 +5,10 @@
  *                                               *
  ------------------------------------------------*/
 
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import { displayName, version } from "./package.json";
 import path from "path";
+import { readFile } from "fs";
 
 let appWin: BrowserWindow;
 
@@ -41,6 +42,37 @@ app.on("ready", () => {
 		appWin.show();
 	});
 });
+/* Functions */
+
+const getFileFromUser = () => {
+	dialog
+		.showOpenDialog(appWin, {
+			properties: ["openFile"],
+			filters: [
+				{ name: "Markdown Files", extensions: ["md", "markdown"] },
+				{ name: "Text Files", extensions: ["txt"] },
+			],
+		})
+		.then((res) => {
+			if (!res.canceled) {
+				openFile(res.filePaths[0]);
+			} else if (res.canceled) {
+				dialog.showErrorBox("Unable to open file", "No file selected");
+			}
+		});
+};
+
+const openFile = (filePath: string) => {
+	readFile(filePath, "utf-8", (err, data) => {
+		if (err) {
+			dialog.showErrorBox(err.name, err.message);
+		} else {
+			appWin.webContents.send("file:opened", data.toString(), filePath);
+		}
+	});
+};
 
 /* IPC */
-ipcMain.on("file:new", (_e, arg) => {});
+ipcMain.on("file:new", (_e, fileName) => {
+	getFileFromUser();
+});
