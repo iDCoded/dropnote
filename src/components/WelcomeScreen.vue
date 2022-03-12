@@ -8,7 +8,8 @@ export default defineComponent({
 	components: { Header, NewFileButton },
 	methods: {
 		newFile() {
-			console.log("Created new file");
+			// @ts-expect-error
+			window.api.send("file:new", "file_name_01.png");
 		},
 	},
 });

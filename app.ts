@@ -1,9 +1,13 @@
-// Dropnote
-// By : Dhruv (iDCoded)
-// Electron Main Process
+/*-----------------------------------------------*
+ *                 Dropnote                      *
+ *               By : Dhruv Anand 	             *
+ *            Electron Main Process              *
+ *                                               *
+ ------------------------------------------------*/
 
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import { displayName, version } from "./package.json";
+import path from "path";
 
 let appWin: BrowserWindow;
 
@@ -15,8 +19,9 @@ app.on("ready", () => {
 		width: 800,
 		height: 600,
 		webPreferences: {
-			nodeIntegration: false,
+			nodeIntegration: true,
 			contextIsolation: false,
+			preload: path.join(__dirname, "../preload.js"),
 		},
 	});
 
@@ -24,6 +29,9 @@ app.on("ready", () => {
 		const port = "3000";
 		const localhost = "http://localhost:" + port;
 		appWin.loadURL(localhost);
+
+		// Open DevTools
+		appWin.webContents.openDevTools();
 	} else {
 		appWin.loadFile("dist/index.html");
 	}
@@ -32,4 +40,9 @@ app.on("ready", () => {
 		console.log(`Launched ${displayName}\n App Version : ${version}`);
 		appWin.show();
 	});
+});
+
+/* IPC */
+ipcMain.on("file:new", (_e, arg) => {
+	console.log(arg);
 });
