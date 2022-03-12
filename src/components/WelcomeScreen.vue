@@ -7,10 +7,7 @@ export default defineComponent({
 	name: "WelcomeScreen",
 	components: { Header, NewFileButton },
 	methods: {
-		newFile() {
-			// @ts-expect-error
-			window.api.send("file:new", "file_name_01.png");
-		},
+		newFile() {},
 	},
 });
 </script>
