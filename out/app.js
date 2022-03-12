@@ -21,7 +21,7 @@ electron_1.app.on("ready", () => {
         height: 600,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false,
+            contextIsolation: true,
             preload: path_1.default.join(__dirname, "../preload.js"),
         },
     });
