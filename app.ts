@@ -43,6 +43,4 @@ app.on("ready", () => {
 });
 
 /* IPC */
-ipcMain.on("file:new", (_e, arg) => {
-	console.log(arg);
-});
+ipcMain.on("file:new", (_e, arg) => {});

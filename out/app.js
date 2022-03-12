@@ -41,7 +41,5 @@ electron_1.app.on("ready", () => {
     });
 });
 /* IPC */
-electron_1.ipcMain.on("file:new", (_e, arg) => {
-    console.log(arg);
-});
+electron_1.ipcMain.on("file:new", (_e, arg) => { });
 //# sourceMappingURL=app.js.map

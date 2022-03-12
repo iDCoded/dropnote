@@ -7,7 +7,10 @@ export default defineComponent({
 	name: "WelcomeScreen",
 	components: { Header, NewFileButton },
 	methods: {
-		newFile() {},
+		createNewFile(fileName: string) {
+			// @ts-expect-error
+			window.api.send("file:new", fileName);
+		},
 	},
 });
 </script>
@@ -17,7 +20,7 @@ export default defineComponent({
 		<Header />
 	</div>
 	<div class="buttons">
-		<NewFileButton v-on:new-file="newFile" class="btn" />
+		<NewFileButton v-on:new-file="createNewFile('file.md')" class="btn" />
 	</div>
 </template>
 
