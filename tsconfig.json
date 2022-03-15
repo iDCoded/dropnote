@@ -17,7 +17,8 @@
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue.",
-		"**/*.ts"
+		"**/*.ts",
+		"preload.js"
 	],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }
