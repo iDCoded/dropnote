@@ -1,6 +1,7 @@
 {
     "name": "dropnote",
     "displayName": "Drop Note",
+    "appName": "Dropnote",
     "description": "A note taking app built on web technologies",
     "main": "out/app.js",
     "private": true,

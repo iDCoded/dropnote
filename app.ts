@@ -6,7 +6,7 @@
  ------------------------------------------------*/
 
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
-import { displayName, version } from "./package.json";
+import { displayName, version, appName } from "./package.json";
 import path from "path";
 import { readFile } from "fs";
 import { StructuralDirectiveTransform } from "@vue/compiler-core";
@@ -79,10 +79,10 @@ const openFile = (filePath: string, fileName: string) => {
  * @param {string} appTitle Title of the app.
  */
 const updateAppTitle = (appTitle: string) => {
-	appWin.title = displayName + " | " + appTitle;
+	appWin.title = appName + " | " + appTitle;
 };
 
 /* IPC */
-ipcMain.on("file:new", (_e, fileName) => {
+ipcMain.on("file:open", (_e, fileName) => {
 	getFileFromUser(fileName);
 });

@@ -2,12 +2,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "NewFileButton",
+	name: "OpenFileButton",
 });
 </script>
 
 <template>
-	<button @click="$emit('new-file')" class="button is-primary new-file-btn">
-		New File
+	<button @click="$emit('open-file')" class="button is-primary new-file-btn">
+		Open File
 	</button>
 </template>

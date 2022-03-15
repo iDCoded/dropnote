@@ -76,10 +76,10 @@ const openFile = (filePath, fileName) => {
  * @param {string} appTitle Title of the app.
  */
 const updateAppTitle = (appTitle) => {
-    appWin.title = package_json_1.displayName + " | " + appTitle;
+    appWin.title = package_json_1.appName + " | " + appTitle;
 };
 /* IPC */
-electron_1.ipcMain.on("file:new", (_e, fileName) => {
+electron_1.ipcMain.on("file:open", (_e, fileName) => {
     getFileFromUser(fileName);
 });
 //# sourceMappingURL=app.js.map

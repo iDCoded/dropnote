@@ -1,15 +1,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Header from "./Layout/Header.vue";
-import NewFileButton from "./NewFileButton.vue";
+import NewFileButton from "./OpenFileButton.vue";
 
 export default defineComponent({
 	name: "WelcomeScreen",
 	components: { Header, NewFileButton },
 	methods: {
-		createNewFile(fileName: string) {
+		openFile(fileName: string) {
 			// @ts-expect-error
-			window.api.send("file:new", fileName);
+			window.api.send("file:open", fileName);
 		},
 	},
 });
@@ -20,7 +20,7 @@ export default defineComponent({
 		<Header />
 	</div>
 	<div class="buttons">
-		<NewFileButton v-on:new-file="createNewFile('Untitled')" class="btn" />
+		<NewFileButton v-on:open-file="openFile('Untitled')" class="btn" />
 	</div>
 </template>
 
