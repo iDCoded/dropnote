@@ -9,6 +9,7 @@ import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import { displayName, version } from "./package.json";
 import path from "path";
 import { readFile } from "fs";
+import { StructuralDirectiveTransform } from "@vue/compiler-core";
 
 let appWin: BrowserWindow;
 
@@ -44,7 +45,7 @@ app.on("ready", () => {
 });
 /* Functions */
 
-const getFileFromUser = () => {
+const getFileFromUser = (fileName: string) => {
 	dialog
 		.showOpenDialog(appWin, {
 			properties: ["openFile"],
@@ -55,24 +56,33 @@ const getFileFromUser = () => {
 		})
 		.then((res) => {
 			if (!res.canceled) {
-				openFile(res.filePaths[0]);
+				openFile(res.filePaths[0], fileName);
 			} else if (res.canceled) {
 				dialog.showErrorBox("Unable to open file", "No file selected");
 			}
 		});
 };
 
-const openFile = (filePath: string) => {
+const openFile = (filePath: string, fileName: string) => {
 	readFile(filePath, "utf-8", (err, data) => {
 		if (err) {
 			dialog.showErrorBox(err.name, err.message);
 		} else {
 			appWin.webContents.send("file:opened", data.toString(), filePath);
+			updateAppTitle(fileName);
 		}
 	});
 };
 
+/**
+ * Sets the title of the application to the specified string.
+ * @param {string} appTitle Title of the app.
+ */
+const updateAppTitle = (appTitle: string) => {
+	appWin.title = displayName + " | " + appTitle;
+};
+
 /* IPC */
 ipcMain.on("file:new", (_e, fileName) => {
-	getFileFromUser();
+	getFileFromUser(fileName);
 });

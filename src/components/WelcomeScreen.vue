@@ -20,7 +20,7 @@ export default defineComponent({
 		<Header />
 	</div>
 	<div class="buttons">
-		<NewFileButton v-on:new-file="createNewFile('file.md')" class="btn" />
+		<NewFileButton v-on:new-file="createNewFile('Untitled')" class="btn" />
 	</div>
 </template>
 

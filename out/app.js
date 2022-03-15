@@ -42,7 +42,7 @@ electron_1.app.on("ready", () => {
     });
 });
 /* Functions */
-const getFileFromUser = () => {
+const getFileFromUser = (fileName) => {
     electron_1.dialog
         .showOpenDialog(appWin, {
         properties: ["openFile"],
@@ -53,25 +53,33 @@ const getFileFromUser = () => {
     })
         .then((res) => {
         if (!res.canceled) {
-            openFile(res.filePaths[0]);
+            openFile(res.filePaths[0], fileName);
         }
         else if (res.canceled) {
             electron_1.dialog.showErrorBox("Unable to open file", "No file selected");
         }
     });
 };
-const openFile = (filePath) => {
+const openFile = (filePath, fileName) => {
     (0, fs_1.readFile)(filePath, "utf-8", (err, data) => {
         if (err) {
             electron_1.dialog.showErrorBox(err.name, err.message);
         }
         else {
             appWin.webContents.send("file:opened", data.toString(), filePath);
+            updateAppTitle(fileName);
         }
     });
 };
+/**
+ * Sets the title of the application to the specified string.
+ * @param {string} appTitle Title of the app.
+ */
+const updateAppTitle = (appTitle) => {
+    appWin.title = package_json_1.displayName + " | " + appTitle;
+};
 /* IPC */
 electron_1.ipcMain.on("file:new", (_e, fileName) => {
-    getFileFromUser();
+    getFileFromUser(fileName);
 });
 //# sourceMappingURL=app.js.map
